@@ -12,7 +12,7 @@ export async function fetchBookings(displayedDates: Date[]) {
   return payload.bookings ?? {};
 }
 
-export async function createBooking(
+export async function createBookingRequest(
   roomId: string,
   date: string,
   startHour: number,

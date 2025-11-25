@@ -1,8 +1,6 @@
-'use client';
-
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useBookingState } from './useBookingState';
-import { fetchBookings, createBooking } from '@/lib/bookingApi';
+import { fetchBookings, createBookingRequest } from '@/lib/bookingApi';
 import { BookingHeader } from './BookingHeader';
 import { RoomFilter } from './RoomFilter';
 import { BookingGrid } from './BookingGrid';
@@ -10,7 +8,7 @@ import { BookingForm } from './BookingForm';
 import type { Booking } from '@/lib/types';
 import { BookingNav } from './BookingNav';
 
-export function BookPage() {
+export function BookPage({ onClose }: { onClose: () => void }) {
   const state = useBookingState();
 
   const bookingMap = useMemo(() => {
@@ -96,7 +94,7 @@ export function BookPage() {
       });
 
       const promises = slots.map((slot) =>
-        createBooking(slot.roomId, slot.date, slot.hour, state.organizerName),
+        createBookingRequest(slot.roomId, slot.date, slot.hour, state.organizerName),
       );
 
       const results = await Promise.all(promises);
@@ -128,13 +126,12 @@ export function BookPage() {
 
   const closeModal = () => {
     state.setShowModal(false);
-    state.setView('table');
+    onClose();
   };
 
   if (state.view === 'form') {
     return (
       <BookingForm
-        selectedSlots={state.selectedSlots}
         organizerName={state.organizerName}
         onOrganizerNameChange={handleOrganizerNameChange}
         onBook={handleBook}
@@ -149,7 +146,7 @@ export function BookPage() {
 
   return (
     <section className="flex-1 flex flex-col space-y-10">
-      <BookingHeader />
+      <BookingHeader title="Välj en tid" />
 
       <RoomFilter
         filteredRooms={state.filteredRooms}
@@ -174,16 +171,16 @@ export function BookPage() {
         loading={state.loading}
       />
 
-        <div className="flex flex-col items-center justify-between mb-0 mt-auto">
-          <div className="flex-1">
-            <p className="text-sm font-semibold text-red-600 mb-3" aria-live="polite">
-              {state.error}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={handleNext}
-            className="
+      <div className="flex flex-col items-center justify-between mb-0 mt-auto">
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-red-600 mb-3" aria-live="polite">
+            {state.error}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={handleNext}
+          className="
             rounded-2xl 
             bg-black 
             px-6 
@@ -198,10 +195,10 @@ export function BookPage() {
             focus-visible:outline-offset-2 
             focus-visible:outline-black
             "
-          >
-            Nästa
-          </button>
-        </div>
+        >
+          Nästa
+        </button>
+      </div>
     </section>
   );
 }

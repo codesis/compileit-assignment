@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import { BookingHeader } from './BookingHeader';
 
 interface BookingFormProps {
-  selectedSlots: Set<string>;
   organizerName: string;
   onOrganizerNameChange: (name: string) => void;
   onBook: () => void;
@@ -46,9 +46,7 @@ export function BookingForm({
 
   return (
     <section className="flex-1 flex flex-col space-y-10">
-      <header className="">
-        <h2 className="text-5xl font-normal text-slate-900">Vem bokar?</h2>
-      </header>
+      <BookingHeader title="Vem bokar?" />
 
       <div className="rounded-lg">
         <div className="space-y-4">

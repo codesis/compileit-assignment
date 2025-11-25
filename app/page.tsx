@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { BookPage } from '@/components/BookPage';
+import { BookPage } from '@/app/components/BookPage';
 
 export default function HomePage() {
   const [showBookPage, setShowBookPage] = useState(false);
@@ -39,7 +39,8 @@ export default function HomePage() {
   }
 
   return (
-    <main className="
+    <main
+      className="
     mx-auto
     max-w-6xl
     space-y-8
@@ -50,8 +51,9 @@ export default function HomePage() {
     min-h-screen
     h-full
     flex
-    flex-col">
-      <BookPage />
+    flex-col"
+    >
+      <BookPage onClose={() => setShowBookPage(false)} />
     </main>
   );
 }

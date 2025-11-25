@@ -43,19 +43,6 @@ export function useBookingState() {
     }
   }, [filterDropdownOpen]);
 
-  useEffect(() => {
-    const stored = localStorage.getItem('bookings');
-    if (stored) {
-      setBookings(JSON.parse(stored));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(bookings).length > 0) {
-      localStorage.setItem('bookings', JSON.stringify(bookings));
-    }
-  }, [bookings]);
-
   const daysToShow = isMobile ? DAYS_TO_SHOW_MOBILE : DAYS_TO_SHOW_DESKTOP;
 
   const displayedDates = useMemo(() => {

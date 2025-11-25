@@ -65,22 +65,21 @@ export function RoomFilter({
         onClick={onToggleDropdown}
         aria-controls="filter"
         aria-expanded={filterDropdownOpen}
-        aria-haspopup="listbox"
         className="
         cursor-pointer 
         flex 
         items-center 
         justify-between 
-        w-36 
+        w-42 
         rounded-md 
         border 
       border-neutral-500
         bg-white 
         px-3 
         py-1 
-        text-sm 
-        font-medium 
-        text-slate-700 
+        text-lg 
+        font-normal 
+        text-black 
         hover:outline-2 
         hover:border-transparent 
         focus-visible:outline 
@@ -101,7 +100,8 @@ export function RoomFilter({
       {filterDropdownOpen && (
         <div
           id="filter"
-          role="listbox"
+          role="group"
+          aria-label="Filtrera rum"
           className="
           absolute 
           top-full 
@@ -116,51 +116,54 @@ export function RoomFilter({
           z-20"
         >
           <div className="p-2 space-y-1">
-            {ROOMS.map((room) => (
-              <label
-                key={room.id}
-                className="
-                flex 
-                items-center 
-                justify-between 
-                px-4 
-                py-2 
-                text-black 
-                hover:bg-emerald-900 
-                hover:text-white 
-                cursor-pointer 
-                rounded 
-                focus-within:bg-emerald-900 
-                focus-within:text-white
-                "
-              >
-                <span className="text-sm ">
-                  {room.name} ({room.capacity} personer)
-                </span>
-                <input
-                  type="checkbox"
-                  checked={tempSelectedRooms.has(room.id)}
-                  onChange={() => handleToggleRoom(room.id)}
-                  className="
-                  appearance-none 
-                  relative 
-                  h-5 
-                  w-5 
+            <ul className="list-none">
+              {ROOMS.map((room) => (
+                <li key={room.id}>
+                  <label
+                    className="
+                  flex 
+                  items-center 
+                  justify-between 
+                  px-4 
+                  py-2 
+                  text-black 
+                  hover:bg-emerald-900 
+                  hover:text-white 
                   cursor-pointer 
-                  bg-white 
-                  before:absolute 
-                  before:left-1/5 
-                  before:bottom-0 
-                  before:content-['']
-                  before:text-emerald-800 
-                  checked:before:content-['✓'] 
-                  rounded-xs outline-1 
-                  focus:ring-brand-500 
-                  focus-visible:outline-white
+                  rounded 
+                  focus-within:bg-emerald-900 
+                  focus-within:text-white
                   "
-                />
-              </label>
-            ))}
+                  >
+                    <span className="text-base ">
+                      {room.name} ({room.capacity} personer)
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={tempSelectedRooms.has(room.id)}
+                      onChange={() => handleToggleRoom(room.id)}
+                      className="
+                    appearance-none 
+                    relative 
+                    h-5 
+                    w-5 
+                    cursor-pointer 
+                    bg-white 
+                    before:absolute 
+                    before:left-1/5 
+                    before:bottom-0 
+                    before:content-['']
+                    before:text-emerald-800 
+                    checked:before:content-['✓'] 
+                    rounded-xs outline-1 
+                    focus:ring-brand-500 
+                    focus-visible:outline-white
+                    "
+                    />
+                  </label>
+                </li>
+              ))}
+            </ul>
             <div className="flex px-4 py-2 gap-2 mt-6">
               <button
                 type="button"

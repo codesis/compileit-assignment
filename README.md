@@ -1,6 +1,6 @@
 # Compileit assignment
 
-Next.js + TypeScript application backed by SQLite (via `better-sqlite3`) to reserve the five meeting rooms available every weekday between 08:00 and 17:00. Weekends are intentionally blocked.
+Next.js + TypeScript single page application backed by SQLite (via `better-sqlite3`) to reserve the five meeting rooms available every weekday between 08:00 and 17:00. Weekends are intentionally blocked.
 
 ## Features
 
@@ -10,6 +10,13 @@ Next.js + TypeScript application backed by SQLite (via `better-sqlite3`) to rese
 - Possibility to book multiple rooms at once for better user experience.
 - SQLite schema initializes automatically and prevents double-booking a slot.
 - Interactive schedule (with the selected date/month rendered as headers) plus an inline booking form.
+
+## Future improvements
+
+- Implement routing for better user experience as now you need to reload the page to return home.
+- Add buttons to move backwards, with or without routing.
+- Add information by the booking form regarding what or which rooms that will be booked.
+- Add possibility to save the information either in your calendar or get it by email.
 
 ## Getting Started
 

@@ -47,9 +47,9 @@ export function BookingNav({
       >
         ←
       </button>
-      <span className="text-base font-normal text-slate-900 min-w-[120px] text-center">
+      <h2 className="text-base font-normal text-slate-900 min-w-[120h2x] text-center">
         {dateRangeText.toLowerCase()}
-      </span>
+      </h2>
       <button
         type="button"
         onClick={onNavigateNext}

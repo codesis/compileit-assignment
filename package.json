@@ -8,7 +8,8 @@
     "start": "next start",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:clean": "rm -f data/rooms.db*"
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",

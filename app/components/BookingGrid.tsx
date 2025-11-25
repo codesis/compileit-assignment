@@ -36,7 +36,11 @@ export function BookingGrid({
   }, [filteredRooms]);
 
   return (
-    <div className="overflow-x-auto rounded-lg bg-white ring-1 ring-neutral-500">
+    <div
+      className="overflow-x-auto rounded-lg bg-white ring-1 ring-neutral-500"
+      aria-label="Kalender"
+      aria-description="Schema för bokbara möten"
+    >
       {/* Header */}
       <div
         className="grid border-b border-neutral-500"
@@ -51,9 +55,9 @@ export function BookingGrid({
               key={dateStr}
               className="text-center font-semibold border-r border-neutral-500 px-2 py-2 last:border-r-0"
             >
-              <div className="text-base font-semibold text-slate-900">
+              <p className="text-base font-semibold text-slate-900">
                 {format(date, 'dd MMM', { locale: sv }).toLowerCase().replace('.', '')}
-              </div>
+              </p>
             </div>
           );
         })}
@@ -87,14 +91,15 @@ export function BookingGrid({
           });
 
           return (
-            <div
+            <ul
               key={dateStr}
-              className="space-y-2 border-r border-neutral-500 last:border-r-0 flex flex-col"
+              aria-label={`Tillgängliga mötesrum för ${format(date, 'dd MMMM yyyy', { locale: sv })}`}
+              className="space-y-2 list-none border-r border-neutral-500 last:border-r-0 flex flex-col"
             >
               {roomsForDay.length === 0 && (
-                <div className="text-sm text-slate-600 italic text-center py-6">
+                <li className="text-sm text-slate-600 italic text-center py-6">
                   Inga mötesrum tillgängliga
-                </div>
+                </li>
               )}
 
               {roomsForDay.map((room) => {
@@ -103,36 +108,42 @@ export function BookingGrid({
                 const timeSlotLabel = `${formatSlot(room.hour)}-${formatSlot(room.hour + 1)}`;
 
                 return (
-                  <button
-                    type="button"
-                    key={key}
-                    onClick={() => onToggleSlot(room.id, dateStr, room.hour)}
-                    className={`rounded-md border m-1.5 mb-0 last:mb-1.5 px-2 py-1 transition text-left
-                      ${
-                        isSelected
-                          ? 'border-emerald-900 bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black'
-                          : 'border-emerald-600 hover:border-emerald-900 hover:outline focus-visible:outline focus-visible:outline-black'
-                      }
-                    `}
-                  >
-                    <div
-                      className={`text-sm font-normal
-                        ${isSelected ? 'text-white' : 'text-slate-900'}
-                        `}
-                    >
-                      {room.name + ' (' + room.capacity + ')'}
-                    </div>
-                    <div
-                      className={`text-xs
-                        ${isSelected ? 'text-white' : 'text-slate-900'}
+                  <li key={key} className="m-1.5 mb-0 last:mb-1.5">
+                    <button
+                      type="button"
+                      onClick={() => onToggleSlot(room.id, dateStr, room.hour)}
+                      className={`rounded-md border px-2 py-1 w-full transition text-left flex flex-col
+                        ${
+                          isSelected
+                            ? 'border-emerald-900 bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black'
+                            : 'border-emerald-600 hover:border-emerald-900 hover:outline focus-visible:outline focus-visible:outline-black'
+                        }
                       `}
                     >
-                      {timeSlotLabel}
-                    </div>
-                  </button>
+                      <span
+                        aria-hidden="true"
+                        className={`text-sm font-normal
+                          ${isSelected ? 'text-white' : 'text-slate-900'}
+                          `}
+                      >
+                        {room.name + ' (' + room.capacity + ')'}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className={`text-xs
+                          ${isSelected ? 'text-white' : 'text-slate-900'}
+                        `}
+                      >
+                        {timeSlotLabel}
+                      </span>
+                      <span className="sr-only">
+                        {room.name + ' ' + room.capacity + ' personer, kl ' + timeSlotLabel}
+                      </span>
+                    </button>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           );
         })}
       </div>
