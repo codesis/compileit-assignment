@@ -41,9 +41,9 @@ export function BookingGrid({
       role="region"
       aria-describedby="calendar-heading"
     >
-    <h2 id="calendar-heading" className="sr-only">
-      Schema för bokbara möten
-    </h2>
+      <h2 id="calendar-heading" className="sr-only">
+        Schema för bokbara möten
+      </h2>
       {/* Header */}
       <div
         className="grid border-b border-neutral-500"
@@ -95,7 +95,12 @@ export function BookingGrid({
           });
 
           return (
-            <div key={dateStr} role="group" aria-labelledby={`date-${dateStr}`} className='border-r border-neutral-500 last:border-r-0'>
+            <div
+              key={dateStr}
+              role="group"
+              aria-labelledby={`date-${dateStr}`}
+              className="border-r border-neutral-500 last:border-r-0"
+            >
               <h3 id={`date-${dateStr}`} className="sr-only">
                 Tillgängliga mötesrum för {dateLabel}
               </h3>
@@ -154,7 +159,11 @@ export function BookingGrid({
         })}
       </div>
 
-      {loading && <p className="p-3 text-center text-sm text-slate-700" role="status" aria-live="polite">Laddar mötesrum…</p>}
+      {loading && (
+        <p className="p-3 text-center text-sm text-slate-700" role="status" aria-live="polite">
+          Laddar mötesrum…
+        </p>
+      )}
     </div>
   );
 }

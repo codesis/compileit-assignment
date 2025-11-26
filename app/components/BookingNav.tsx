@@ -47,9 +47,11 @@ export function BookingNav({
       >
         ←
       </button>
-      <h2 className="text-base font-normal text-slate-900 min-w-[120h2x] text-center"
+      <h2
+        className="text-base font-normal text-slate-900 min-w-[120h2x] text-center"
         aria-live="polite"
-        aria-atomic="true">
+        aria-atomic="true"
+      >
         {dateRangeText.toLowerCase()}
       </h2>
       <button

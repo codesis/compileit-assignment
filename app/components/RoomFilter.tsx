@@ -131,11 +131,11 @@ export function RoomFilter({
           <div className="p-2 space-y-1">
             <fieldset>
               <legend className="sr-only">Välj mötesrum att visa</legend>
-            <ul className="list-none">
-              {ROOMS.map((room) => (
-                <li key={room.id}>
-                  <label
-                    className="
+              <ul className="list-none">
+                {ROOMS.map((room) => (
+                  <li key={room.id}>
+                    <label
+                      className="
                   flex 
                   items-center 
                   justify-between 
@@ -149,15 +149,15 @@ export function RoomFilter({
                   focus-within:bg-emerald-900 
                   focus-within:text-white
                   "
-                  >
-                    <span className="text-base ">
-                      {room.name} ({room.capacity} personer)
-                    </span>
-                    <input
-                      type="checkbox"
-                      checked={tempSelectedRooms.has(room.id)}
-                      onChange={() => handleToggleRoom(room.id)}
-                      className="
+                    >
+                      <span className="text-base ">
+                        {room.name} ({room.capacity} personer)
+                      </span>
+                      <input
+                        type="checkbox"
+                        checked={tempSelectedRooms.has(room.id)}
+                        onChange={() => handleToggleRoom(room.id)}
+                        className="
                     appearance-none 
                     relative 
                     h-5 
@@ -174,10 +174,10 @@ export function RoomFilter({
                     focus:ring-brand-500 
                     focus-visible:outline-white
                     "
-                    />
-                  </label>
-                </li>
-              ))}
+                      />
+                    </label>
+                  </li>
+                ))}
               </ul>
             </fieldset>
             <div className="flex px-4 py-2 gap-2 mt-6">

@@ -80,12 +80,8 @@ export function BookingForm({
             </label>
           </div>
 
- {error && (
-            <p 
-              className="text-sm text-red-600" 
-              id="error-message"
-              role="alert"
-            >
+          {error && (
+            <p className="text-sm text-red-600" id="error-message" role="alert">
               {error}
             </p>
           )}
@@ -134,9 +130,14 @@ export function BookingForm({
         w-full 
         shadow-xl"
       >
-        <p id="success-message" className="text-base text-black text-center flex flex-col items-center gap-2">
+        <p
+          id="success-message"
+          className="text-base text-black text-center flex flex-col items-center gap-2"
+        >
           {confirmedBookingsCount === 1 ? 'Ditt rum är bokat!' : 'Dina rum är bokade!'}
-          <span className="text-2xl" aria-hidden="true">☺</span>
+          <span className="text-2xl" aria-hidden="true">
+            ☺
+          </span>
         </p>
       </dialog>
     </section>
