@@ -43,11 +43,13 @@ export function BookingNav({
         focus-visible:outline 
         focus-visible:outline-black
         "
-        aria-label="Föregående datum"
+        aria-label="Visa tidigare datum"
       >
         ←
       </button>
-      <h2 className="text-base font-normal text-slate-900 min-w-[120h2x] text-center">
+      <h2 className="text-base font-normal text-slate-900 min-w-[120h2x] text-center"
+        aria-live="polite"
+        aria-atomic="true">
         {dateRangeText.toLowerCase()}
       </h2>
       <button
@@ -67,7 +69,7 @@ export function BookingNav({
          focus-visible:outline 
          focus-visible:outline-black
          "
-        aria-label="Kommande datum"
+        aria-label="Visa senare datum"
       >
         →
       </button>

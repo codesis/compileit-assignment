@@ -38,9 +38,12 @@ export function BookingGrid({
   return (
     <div
       className="overflow-x-auto rounded-lg bg-white ring-1 ring-neutral-500"
-      aria-label="Kalender"
-      aria-description="Schema för bokbara möten"
+      role="region"
+      aria-describedby="calendar-heading"
     >
+    <h2 id="calendar-heading" className="sr-only">
+      Schema för bokbara möten
+    </h2>
       {/* Header */}
       <div
         className="grid border-b border-neutral-500"
@@ -72,6 +75,7 @@ export function BookingGrid({
       >
         {displayedDates.map((date) => {
           const dateStr = format(date, 'yyyy-MM-dd');
+          const dateLabel = format(date, 'dd MMMM yyyy', { locale: sv });
 
           const roomsForDay = allTimeSlots.flatMap((hour) => {
             const availableSlots = getAvailableTimeSlots(date);
@@ -91,64 +95,66 @@ export function BookingGrid({
           });
 
           return (
-            <ul
-              key={dateStr}
-              aria-label={`Tillgängliga mötesrum för ${format(date, 'dd MMMM yyyy', { locale: sv })}`}
-              className="space-y-2 list-none border-r border-neutral-500 last:border-r-0 flex flex-col"
-            >
-              {roomsForDay.length === 0 && (
-                <li className="text-sm text-slate-600 italic text-center py-6">
-                  Inga mötesrum tillgängliga
-                </li>
-              )}
+            <div key={dateStr} role="group" aria-labelledby={`date-${dateStr}`} className='border-r border-neutral-500 last:border-r-0'>
+              <h3 id={`date-${dateStr}`} className="sr-only">
+                Tillgängliga mötesrum för {dateLabel}
+              </h3>
+              <ul
+                key={dateStr}
+                aria-label={`Tillgängliga mötesrum för ${format(date, 'dd MMMM yyyy', { locale: sv })}`}
+                className="space-y-2 list-none flex flex-col"
+              >
+                {roomsForDay.length === 0 && (
+                  <li className="text-sm text-slate-600 italic text-center py-6">
+                    Inga mötesrum tillgängliga
+                  </li>
+                )}
 
-              {roomsForDay.map((room) => {
-                const key = `${dateStr}-${room.id}-${room.hour}`;
-                const isSelected = selectedSlots.has(key);
-                const timeSlotLabel = `${formatSlot(room.hour)}-${formatSlot(room.hour + 1)}`;
+                {roomsForDay.map((room) => {
+                  const key = `${dateStr}-${room.id}-${room.hour}`;
+                  const isSelected = selectedSlots.has(key);
+                  const timeSlotLabel = `${formatSlot(room.hour)}-${formatSlot(room.hour + 1)}`;
 
-                return (
-                  <li key={key} className="m-1.5 mb-0 last:mb-1.5">
-                    <button
-                      type="button"
-                      onClick={() => onToggleSlot(room.id, dateStr, room.hour)}
-                      className={`rounded-md border px-2 py-1 w-full transition text-left flex flex-col
-                        ${
-                          isSelected
-                            ? 'border-emerald-900 bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black'
-                            : 'border-emerald-600 hover:border-emerald-900 hover:outline focus-visible:outline focus-visible:outline-black'
-                        }
-                      `}
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={`text-sm font-normal
-                          ${isSelected ? 'text-white' : 'text-slate-900'}
-                          `}
-                      >
-                        {room.name + ' (' + room.capacity + ')'}
-                      </span>
-                      <span
-                        aria-hidden="true"
-                        className={`text-xs
-                          ${isSelected ? 'text-white' : 'text-slate-900'}
+                  return (
+                    <li key={key} className="m-1.5 mb-0 last:mb-1.5">
+                      <button
+                        type="button"
+                        onClick={() => onToggleSlot(room.id, dateStr, room.hour)}
+                        aria-selected={isSelected}
+                        aria-label={`${room.name}, ${room.capacity} personer, klockan ${timeSlotLabel}`}
+                        className={`rounded-md border px-2 py-1 w-full transition text-left flex flex-col
+                          ${
+                            isSelected
+                              ? 'border-emerald-900 bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black'
+                              : 'border-emerald-600 hover:border-emerald-900 hover:outline focus-visible:outline focus-visible:outline-black'
+                          }
                         `}
                       >
-                        {timeSlotLabel}
-                      </span>
-                      <span className="sr-only">
-                        {room.name + ' ' + room.capacity + ' personer, kl ' + timeSlotLabel}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+                        <span
+                          className={`text-sm font-normal
+                            ${isSelected ? 'text-white' : 'text-slate-900'}
+                            `}
+                        >
+                          {room.name + ' (' + room.capacity + ')'}
+                        </span>
+                        <span
+                          className={`text-xs
+                            ${isSelected ? 'text-white' : 'text-slate-900'}
+                          `}
+                        >
+                          {timeSlotLabel}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           );
         })}
       </div>
 
-      {loading && <p className="p-3 text-center text-sm text-slate-700">Laddar mötesrum…</p>}
+      {loading && <p className="p-3 text-center text-sm text-slate-700" role="status" aria-live="polite">Laddar mötesrum…</p>}
     </div>
   );
 }

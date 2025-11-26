@@ -74,21 +74,28 @@ export function BookingForm({
                 value={organizerName}
                 onChange={(e) => onOrganizerNameChange(e.target.value)}
                 placeholder="Skriv ditt fullständiga namn här"
-                aria-errormessage="error-message"
+                aria-describedby={error ? 'error-message' : undefined}
                 aria-invalid={error ? 'true' : 'false'}
               />
             </label>
           </div>
 
-          <p className="text-sm text-red-600" id="error-message">
-            {error}
-          </p>
+ {error && (
+            <p 
+              className="text-sm text-red-600" 
+              id="error-message"
+              role="alert"
+            >
+              {error}
+            </p>
+          )}
         </div>
       </div>
       <button
         type="button"
         onClick={onBook}
         disabled={status === 'saving'}
+        aria-live="polite"
         className="
         rounded-2xl 
         bg-black 
@@ -111,6 +118,7 @@ export function BookingForm({
 
       <dialog
         ref={dialogRef}
+        aria-labelledby="success-message"
         onClick={(e) => {
           if (e.target === dialogRef.current) {
             onCloseModal();
@@ -126,9 +134,9 @@ export function BookingForm({
         w-full 
         shadow-xl"
       >
-        <p className="text-base text-black text-center flex flex-col items-center gap-2">
+        <p id="success-message" className="text-base text-black text-center flex flex-col items-center gap-2">
           {confirmedBookingsCount === 1 ? 'Ditt rum är bokat!' : 'Dina rum är bokade!'}
-          <span className="text-2xl">☺</span>
+          <span className="text-2xl" aria-hidden="true">☺</span>
         </p>
       </dialog>
     </section>

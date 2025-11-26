@@ -22,6 +22,19 @@ export function RoomFilter({
     }
   }, [filterDropdownOpen, filteredRooms]);
 
+  useEffect(() => {
+    if (!filterDropdownOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onToggleDropdown();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [filterDropdownOpen, onToggleDropdown]);
+
   const handleToggleRoom = (roomId: string) => {
     setTempSelectedRooms((prev) => {
       const next = new Set(prev);
@@ -100,7 +113,7 @@ export function RoomFilter({
       {filterDropdownOpen && (
         <div
           id="filter"
-          role="group"
+          role="region"
           aria-label="Filtrera rum"
           className="
           absolute 
@@ -116,6 +129,8 @@ export function RoomFilter({
           z-20"
         >
           <div className="p-2 space-y-1">
+            <fieldset>
+              <legend className="sr-only">Välj mötesrum att visa</legend>
             <ul className="list-none">
               {ROOMS.map((room) => (
                 <li key={room.id}>
@@ -163,7 +178,8 @@ export function RoomFilter({
                   </label>
                 </li>
               ))}
-            </ul>
+              </ul>
+            </fieldset>
             <div className="flex px-4 py-2 gap-2 mt-6">
               <button
                 type="button"
@@ -181,6 +197,7 @@ export function RoomFilter({
                 focus-visible:outline-black
                 "
                 onClick={handleApply}
+                aria-label="Filtrera på valda rum"
               >
                 Välj
               </button>
@@ -199,6 +216,7 @@ export function RoomFilter({
                 focus-visible:outline-black
                 "
                 onClick={handleClearAll}
+                aria-label="Avmarkera alla rum"
               >
                 Avmarkera
               </button>
