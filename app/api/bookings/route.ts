@@ -15,9 +15,9 @@ const bookingSchema = z.object({
     }, 'Only weekdays between 08:00 and 17:00 are allowed'),
   startHour: z
     .number()
-    .int()
     .min(WEEKDAY_START_HOUR)
     .max(WEEKDAY_END_HOUR - 1),
+  endHour: z.number().min(WEEKDAY_START_HOUR).max(WEEKDAY_END_HOUR),
   title: z.string().min(1).max(80),
   organizer: z.string().min(1).max(80),
 });

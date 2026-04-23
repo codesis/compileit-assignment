@@ -16,20 +16,20 @@ export default function HomePage() {
           <button
             onClick={() => setShowBookPage(true)}
             className="
-            rounded-2xl 
-            bg-black 
-            px-6 
-            py-3 
-            text-base 
-            font-normal 
-            text-white 
-            shadow-sm 
-            hover:bg-brand-700 
-            w-full 
-            focus-visible:outline-2 
-            focus-visible:outline-offset-2 
-            focus-visible:outline-black
-            "
+              rounded-2xl 
+              bg-black 
+              px-6 
+              py-3 
+              text-base 
+              font-normal 
+              text-white 
+              shadow-sm 
+              hover:bg-brand-700 
+              w-full 
+              focus-visible:outline-2 
+              focus-visible:outline-offset-2 
+              focus-visible:outline-black
+              "
           >
             Boka
           </button>
@@ -41,17 +41,17 @@ export default function HomePage() {
   return (
     <main
       className="
-    mx-auto
-    max-w-6xl
-    space-y-8
-    px-6
-    pb-12
-    pt-24
-    lg:py-16
-    min-h-screen
-    h-full
-    flex
-    flex-col"
+        mx-auto
+        max-w-6xl
+        space-y-8
+        px-6
+        pb-12
+        pt-24
+        lg:py-16
+        min-h-screen
+        h-full
+        flex
+        flex-col"
     >
       <BookPage onClose={() => setShowBookPage(false)} />
     </main>

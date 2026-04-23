@@ -4,7 +4,7 @@ import { WEEKDAY_END_HOUR, WEEKDAY_START_HOUR } from './time';
 export type Booking = {
   id: number;
   roomId: string;
-  date: string; // ISO date (yyyy-MM-dd)
+  date: string;
   startHour: number;
   endHour: number;
   title: string;
@@ -20,13 +20,23 @@ const selectByDate = db.prepare(
 );
 
 const conflictQuery = db.prepare(
-  `SELECT id FROM bookings WHERE roomId = ? AND date = ? AND startHour = ? LIMIT 1`,
+  `SELECT id FROM bookings 
+   WHERE roomId = ? 
+   AND date = ? 
+   AND (
+     (startHour < ? AND endHour > ?)
+     OR (startHour < ? AND endHour > ?)
+     OR (startHour >= ? AND endHour <= ?)
+   )
+   LIMIT 1`,
 );
 
 const insertBooking = db.prepare(
   `INSERT INTO bookings (roomId, date, startHour, endHour, title, organizer)
    VALUES (@roomId, @date, @startHour, @endHour, @title, @organizer)`,
 );
+
+const deleteBooking = db.prepare(`DELETE FROM bookings WHERE id = ?`);
 
 export function getBookingsForDate(date: string): Booking[] {
   return selectByDate.all(date) as Booking[];
@@ -36,6 +46,7 @@ type CreateBookingInput = {
   roomId: string;
   date: string;
   startHour: number;
+  endHour: number;
   title: string;
   organizer: string;
 };
@@ -45,20 +56,35 @@ export function createBooking(payload: CreateBookingInput) {
     throw new Error('Invalid start hour');
   }
 
-  const conflict = conflictQuery.get(payload.roomId, payload.date, payload.startHour);
+  if (payload.endHour <= payload.startHour || payload.endHour > WEEKDAY_END_HOUR) {
+    throw new Error('Invalid end hour');
+  }
+
+  const conflict = conflictQuery.get(
+    payload.roomId,
+    payload.date,
+    payload.endHour,
+    payload.startHour,
+    payload.endHour,
+    payload.startHour,
+    payload.startHour,
+    payload.endHour,
+  );
+
   if (conflict) {
     throw new Error('Slot already booked');
   }
 
-  const info = insertBooking.run({
-    ...payload,
-    endHour: payload.startHour + 1,
-  });
+  const info = insertBooking.run(payload);
 
   return {
     id: Number(info.lastInsertRowid),
     ...payload,
-    endHour: payload.startHour + 1,
     createdAt: new Date().toISOString(),
   } satisfies Booking;
+}
+
+export function removeBooking(id: number) {
+  const info = deleteBooking.run(id);
+  return info.changes > 0;
 }

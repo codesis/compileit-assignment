@@ -19,7 +19,8 @@ body {
   }
 }
 
-button {
+button,
+select {
   cursor: pointer;
 
   &:disabled {

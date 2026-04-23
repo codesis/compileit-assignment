@@ -16,6 +16,7 @@ export async function createBookingRequest(
   roomId: string,
   date: string,
   startHour: number,
+  endHour: number,
   organizerName: string,
 ) {
   return fetch('/api/bookings', {
@@ -27,8 +28,15 @@ export async function createBookingRequest(
       roomId,
       date,
       startHour,
+      endHour,
       title: 'Meeting',
       organizer: organizerName,
     }),
+  });
+}
+
+export async function deleteBooking(bookingId: number) {
+  return fetch(`/api/bookings/${bookingId}`, {
+    method: 'DELETE',
   });
 }
