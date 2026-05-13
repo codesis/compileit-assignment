@@ -21,14 +21,11 @@ const selectByDate = db.prepare(
 
 const conflictQuery = db.prepare(
   `SELECT id FROM bookings 
-   WHERE roomId = ? 
-   AND date = ? 
-   AND (
-     (startHour < ? AND endHour > ?)
-     OR (startHour < ? AND endHour > ?)
-     OR (startHour >= ? AND endHour <= ?)
-   )
-   LIMIT 1`,
+    WHERE roomId = ? 
+    AND date = ? 
+    AND startHour < ?
+    AND endHour > ?
+    LIMIT 1`
 );
 
 const insertBooking = db.prepare(
@@ -63,12 +60,8 @@ export function createBooking(payload: CreateBookingInput) {
   const conflict = conflictQuery.get(
     payload.roomId,
     payload.date,
-    payload.endHour,
-    payload.startHour,
-    payload.endHour,
-    payload.startHour,
-    payload.startHour,
-    payload.endHour,
+    payload.endHour,      
+    payload.startHour 
   );
 
   if (conflict) {
